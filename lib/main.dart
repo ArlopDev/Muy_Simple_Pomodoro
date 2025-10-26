@@ -63,6 +63,23 @@ class _PomodoroState extends State<Pomodoro>{
     });
   }
 
+  double calcularProgreso(){
+    int tiempoTotal;
+    switch (estado){
+      case "trabajo":
+        tiempoTotal = pomodoro * 60;break;
+      case "descanso_corto":
+        tiempoTotal = descansoCorto * 60;break;
+      case "descanso_largo":
+        tiempoTotal = descansoLargo * 60;break;
+      default:
+        tiempoTotal = 1500;
+    }
+
+    int tiempoRestante = (contadorMinutos * 60) + contadorSegundos;
+    return tiempoRestante / tiempoTotal;
+  }
+
   void pausarReanudar(){
     setState(() {
       pulsado = true;
@@ -92,6 +109,7 @@ class _PomodoroState extends State<Pomodoro>{
 
   void elegirEstado(){
     setState(() {
+      contadorSegundos = 0;
       switch (estado){
       case "trabajo": contadorMinutos = pomodoro;textoEstado="Trabajo";break;
       case "descanso_corto": contadorMinutos = descansoCorto;textoEstado="Descanso";break;
@@ -101,16 +119,19 @@ class _PomodoroState extends State<Pomodoro>{
   }
 
   void cambiarEstado(){
-    switch (estado){
-      case "trabajo": 
-      if(contadorTrabajo >= 4){
-        estado = "descanso_largo";break;
-      }else{
-        estado="descanso_corto";break;
+    setState(() {
+      switch (estado){
+        case "trabajo": 
+        if(contadorTrabajo >= 4){
+          estado = "descanso_largo";
+        }else{
+          estado="descanso_corto";
+        }
+        break;
+        case "descanso_corto": estado="trabajo";contadorTrabajo++;break;
+        case "descanso_largo": estado="trabajo";contadorTrabajo = 1;break;
       }
-      case "descanso_corto": estado="trabajo";contadorTrabajo++;break;
-      case "descanso_largo": estado="trabajo";contadorTrabajo = 1;break;
-    }
+    });
   }
 
 
@@ -122,7 +143,8 @@ class _PomodoroState extends State<Pomodoro>{
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 80,),
+            SizedBox(height: estadoContador ? 150 : 80,),
+            if(!estadoContador)
             Text("Pomodoro $contadorTrabajo/4",
                       style: TextStyle(
                         fontSize: 20,
@@ -131,45 +153,59 @@ class _PomodoroState extends State<Pomodoro>{
                       ),
                     ),
             SizedBox(height: 30,),
-            GestureDetector(
-              onTap: pausarReanudar,
-              child: AnimatedContainer(//Timer Numero
-              duration: Duration(milliseconds: 150),
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: pulsado ? Colors.blue[400] : Colors.blue[200],
-                boxShadow: [
-                  BoxShadow(
-                    color: pulsado ? Colors.blue.withValues(alpha: 0.6) : Colors.grey,
-                    blurRadius: pulsado ? 20 : 10,
-                    offset: Offset(0, 4),
-                  )
-                ]
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("$contadorMinutos:${contadorSegundos.toString().padLeft(2,"0")}",
-                      style: TextStyle(
-                        fontSize: 65,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                      ),
-                    ),
-                    Text(estadoContador ? "" : "pausado",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ],
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 150),
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: pulsado ? Colors.blue.withValues(alpha: 0.4) : Colors.grey.withValues(alpha: 0.3),
+                        blurRadius: pulsado ? 25 : 12,
+                        spreadRadius: pulsado ? 5 : 0,
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ),
+                CustomPaint(
+                  size: Size(250, 250),
+                  painter: CirculoReloj(progreso: calcularProgreso(), color: pulsado ? Colors.blue[300]! : Colors.blue[200]!),
+                ),
+                GestureDetector(
+                  onTap: pausarReanudar,
+                  child: Container(
+                  width: 250,
+                  height: 250,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("$contadorMinutos:${contadorSegundos.toString().padLeft(2,"0")}",
+                          style: TextStyle(
+                            fontSize: 65,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
+                          ),
+                        ),
+                        if(!estadoContador)
+                        Text("pausado",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+                ),
+              ],
             ),
             SizedBox(height: 60,),
             Text(textoEstado,
@@ -177,29 +213,25 @@ class _PomodoroState extends State<Pomodoro>{
                 fontSize: 35,
               ),
             ),
-            SizedBox(height: 25,),
-            Text("Tu puedes",
-              style: TextStyle(
-                fontSize: 25,
-              ),
-            ),
-            SizedBox(height: 50,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(onPressed: reiniciar, child: Text("Reiniciar",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                )),
-                SizedBox(width: 15,),
-                ElevatedButton(onPressed: saltarSeccion, child: Text("Saltar sección",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                )),
-              ],
-            ),            
+            if(!estadoContador) ...[
+              SizedBox(height: 75,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(onPressed: reiniciar, child: Text("Reiniciar",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )),
+                  SizedBox(width: 15,),
+                  ElevatedButton(onPressed: saltarSeccion, child: Text("Saltar sección",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )),
+                ],
+              ),            
+            ]
           ],
         ),
       ),
@@ -207,3 +239,37 @@ class _PomodoroState extends State<Pomodoro>{
   }
 }
 
+
+
+class CirculoReloj extends CustomPainter{
+  final double progreso;
+  final Color color;
+
+  CirculoReloj({required this.progreso, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size){
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+
+    Paint fondoPaint = Paint()
+      ..color = Colors.blueGrey[500]!
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(center, radius, fondoPaint);
+
+    Paint progresoPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius), 
+      -90 * (3.14159/180),
+      -progreso * 360 * (3.14159 / 180),
+      true,
+      progresoPaint,
+    );
+  }
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
