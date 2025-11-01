@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 
 void main(){
   runApp(MaterialApp(home: Pomodoro(),debugShowCheckedModeBanner: false,));
@@ -11,12 +12,38 @@ class Pomodoro extends StatefulWidget{
 }
 
 class _PomodoroState extends State<Pomodoro>{
+  
+  @override
+  void initState() {
+    super.initState();
+    // Pre-calentar animaciones
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        estadoContador = true;
+      });
+      Future.delayed(Duration(milliseconds: 100), () {
+        setState(() {
+          estadoContador = false;
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose(){
+    _audioPlayer.dispose();
+    timerGeneral?.cancel();
+    super.dispose();
+  }
+
   final int pomodoro = 25;
   final int descansoCorto = 5;
   final int descansoLargo = 15;
   
-  int contadorMinutos = 25;
-  int contadorSegundos = 0;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  int contadorMinutos = 0;
+  int contadorSegundos = 2;
   
   int minutosMaximos = 0;
 
@@ -30,6 +57,14 @@ class _PomodoroState extends State<Pomodoro>{
   int contadorTrabajo = 1;
 
   bool pulsado = false;
+
+  Future<void> reproducir_sonido(String archivo) async {
+    try{
+      await _audioPlayer.play(AssetSource("sounds/$archivo"));
+    }catch(e){
+      print("Error al encontrar el sonido: $e");
+    }
+  }
 
   void reiniciar(){
     minutosMaximos = 0;
@@ -73,6 +108,7 @@ class _PomodoroState extends State<Pomodoro>{
     }
     if(contadorMinutos == 0 && contadorSegundos == 0){
       pausarTimer();
+      reproducir_sonido("finish.mp3");
       cambiarEstado();
       elegirEstado();
       estadoContador = false;
@@ -105,6 +141,7 @@ class _PomodoroState extends State<Pomodoro>{
       pausarTimer();
       }else{
       estadoContador = true;
+      reproducir_sonido("start.mp3");
       iniciarTimer();
       }
 
@@ -262,6 +299,7 @@ class _PomodoroState extends State<Pomodoro>{
             Text(textoEstado,
               style: TextStyle(
                 fontSize: 35,
+                fontWeight: FontWeight.w500
               ),
             ),
             AnimatedOpacity(
@@ -281,11 +319,11 @@ class _PomodoroState extends State<Pomodoro>{
                       children: [
                         ElevatedButton.icon(
                           onPressed: agregarMinuto, 
-                          icon: Icon(Icons.add, size: 25,color: Colors.blue[600],),
-                          label: Text("1 minuto",style: TextStyle(fontWeight: FontWeight.bold,),),
+                          icon: Icon(Icons.add, size: 25,color: Colors.white,),
+                          label: Text("1 minuto",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[100],
-                            foregroundColor: Colors.blue[800],
+                            backgroundColor: Colors.blue[300],
+                            foregroundColor: Colors.white,
                             elevation: 0,
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -305,11 +343,11 @@ class _PomodoroState extends State<Pomodoro>{
                       children: [
                         ElevatedButton.icon(
                           onPressed: reiniciar, 
-                          icon: Icon(Icons.refresh, size: 20,color: Colors.blue[600],),
-                          label: Text("Reiniciar",style: TextStyle(fontWeight: FontWeight.bold,),),
+                          icon: Icon(Icons.refresh, size: 20,color: Colors.white,),
+                          label: Text("Reiniciar",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[100],
-                            foregroundColor: Colors.blue[800],
+                            backgroundColor: Colors.blue[300],
+                            foregroundColor: Colors.white,
                             elevation: 0,
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             shape: RoundedRectangleBorder(
@@ -320,11 +358,11 @@ class _PomodoroState extends State<Pomodoro>{
                         SizedBox(width: 15,),
                         ElevatedButton.icon(
                           onPressed: saltarSeccion, 
-                          icon: Icon(Icons.keyboard_double_arrow_right_outlined, size: 25,color: Colors.blue[600],),
-                          label: Text("Saltar",style: TextStyle(fontWeight: FontWeight.bold,),),
+                          icon: Icon(Icons.keyboard_double_arrow_right_outlined, size: 25,color: Colors.white,),
+                          label: Text("Saltar",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[100],
-                            foregroundColor: Colors.blue[800],
+                            backgroundColor: Colors.blue[300],
+                            foregroundColor: Colors.white,
                             elevation: 0,
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             shape: RoundedRectangleBorder(
