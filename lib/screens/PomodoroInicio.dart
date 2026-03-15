@@ -1,21 +1,23 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../widgets/CirculoReloj.dart' show CirculoReloj;
+import '../utils/ManejarSonido.dart';
+import '../widgets/BotonBase.dart';
+import '../utils/notificacion_service.dart';
 
-import '../widgets/circulo_reloj.dart' show CirculoReloj;
-import '../utils/sonido.dart';
-import '../widgets/boton.dart';
+//import '../utils/Alertas.dart';
 
-class Pomodoro extends StatefulWidget{
-
+class PomodoroInicio extends StatefulWidget{
   @override
-  State<Pomodoro> createState() => _PomodoroState(); 
+  State<PomodoroInicio> createState() => _PomodoroInicioState(); 
 }
 
-class _PomodoroState extends State<Pomodoro>{
+class _PomodoroInicioState extends State<PomodoroInicio>{
   
-  final int pomodoro = 25;
+  final int tiempoPomodoro = 25;
   final int descansoCorto = 5;
   final int descansoLargo = 15;
 
@@ -36,7 +38,34 @@ class _PomodoroState extends State<Pomodoro>{
   bool pulsado = false;
 
 
-  void reiniciar(){
+  int agregarMinutosMax = 5;
+
+  final List<String> mensajesDescanso = [
+    "Buen trabajo, tómate un descanso.",
+    "¡Sesión completada! Hora de relajarte.",
+    "Bien hecho, despeja la mente un momento.",
+    "Gran progreso, descansa un poco.",
+    "Tu cerebro te lo agradece, pausa un momento."
+  ];
+
+  final List<String> mensajesEnfoque = [
+    "Listos para volver.",
+    "Descanso terminado, ¡sigamos!",
+    "Hora de concentrarse otra vez.",
+    "Energía renovada, continuemos.",
+    "Vamos por otra sesión."
+  ];
+
+  String mensajeAleatorio(List<String> lista) {
+    final random = Random();
+    return lista[random.nextInt(lista.length)];
+  }
+
+  // void reiniciar(){
+  //   Alertas.mostrarConfirmacion(context: context, titulo: "¿Reiniciar?", mensaje: "Solo el contador actual", accion: ejecutarReinicio);
+  // }
+
+  void ejecutarReinicio(){
     minutosMaximos = 0;
     setState(() {
       pausarTimer();
@@ -55,42 +84,58 @@ class _PomodoroState extends State<Pomodoro>{
     });
   }
 
-  void agregarMinuto(){
-    setState(() {
-      if(minutosMaximos < 5 && estado == "enfoque"){
-        contadorMinutos++;
-        minutosMaximos++;
-      }
-      if(minutosMaximos < 3 && (estado == "descanso_corto" || estado == "descanso_largo")){
-        contadorMinutos++;
-        minutosMaximos++;
-      }
-    });
-    calcularProgreso();
-  }
+  // void agregarMinuto(){
+  //   setState(() {
+  //     if(minutosMaximos < agregarMinutosMax && estado == "enfoque"){
+  //       contadorMinutos++;
+  //       minutosMaximos++;
+  //     }
+  //     if(minutosMaximos < agregarMinutosMax && (estado == "descanso_corto" || estado == "descanso_largo")){
+  //       contadorMinutos++;
+  //       minutosMaximos++;
+  //     }
+  //   });
+  //   calcularProgreso();
+  // }
 
-  void decrementar(){
+  void decrementar() async{
     setState(() {
       contadorSegundos--;
     if(contadorSegundos < 0){
       contadorSegundos = 59;
       contadorMinutos--;
     }
+    });
+
     if(contadorMinutos == 0 && contadorSegundos == 0){
       pausarTimer();
-      MiSonido.reproducir("finish.mp3");
-      cambiarEstado();
-      elegirEstado();
-      contando = false;
+      String texto = "";
+      if(estado == "enfoque"){
+        texto = mensajeAleatorio(mensajesDescanso);
+      }else{
+        texto = mensajeAleatorio(mensajesEnfoque);
+      }
+      ManejarSonido.reproducir("finish.mp3");
+      await NotificacionService.mostrarFinSesion(
+        "¡Sesión terminada!",
+        texto,
+      );
+      setState(() {
+        cambiarEstado();
+        elegirEstado();
+        contando = false;
+      });
     }
-    });
+    await NotificacionService.mostrarContando(
+      "$contadorMinutos:${contadorSegundos.toString().padLeft(2, '0')} restantes"
+    );
   }
 
   double calcularProgreso(){
     int tiempoTotal;
     switch (estado){
       case "enfoque":
-        tiempoTotal = (pomodoro + minutosMaximos) * 60;break;
+        tiempoTotal = (tiempoPomodoro + minutosMaximos) * 60;break;
       case "descanso_corto":
         tiempoTotal = (descansoCorto + minutosMaximos) * 60;break;
       case "descanso_largo":
@@ -111,7 +156,9 @@ class _PomodoroState extends State<Pomodoro>{
       pausarTimer();
       }else{
       contando = true;
-      MiSonido.reproducir("start.mp3");
+      if(estado == "enfoque"){
+        ManejarSonido.reproducir("start.mp3");
+      }
       iniciarTimer();
       }
 
@@ -129,13 +176,14 @@ class _PomodoroState extends State<Pomodoro>{
 
   void pausarTimer(){
     timerGeneral?.cancel();
+    NotificacionService.cancelar();
   }
 
   void elegirEstado(){
     setState(() {
       contadorSegundos = 0;
       switch (estado){
-      case "enfoque": contadorMinutos = pomodoro;textoEstado="Enfoque";break;
+      case "enfoque": contadorMinutos = tiempoPomodoro;textoEstado="Enfoque";break;
       case "descanso_corto": contadorMinutos = descansoCorto;textoEstado="Descanso";break;
       case "descanso_largo": contadorMinutos = descansoLargo;textoEstado="Descanso largo";break;
     }
@@ -177,10 +225,10 @@ class _PomodoroState extends State<Pomodoro>{
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 730),
                 curve: Curves.easeInOut,
-                height: contando ? 0 : 30,
+                height: contando ? 0 : 37,
                 child: Text("Pomodoro $contadorTrabajo/4",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.black54,
                       ),
@@ -222,13 +270,13 @@ class _PomodoroState extends State<Pomodoro>{
                 height: contando ? 0 : 160,
                 child: Column(
                   children: [
-                    SizedBox(height: 45,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MiBoton(funcion: agregarMinuto, icono: Icons.add, texto: "1 minuto")
-                      ],
-                    ),
+                    SizedBox(height: 35),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     BotonBase(funcion: agregarMinuto, icono: Icons.add, texto: "1 minuto"),
+                    //   ],
+                    // ),
                     AnimatedContainer(
                       duration: Duration(milliseconds: 730),
                       curve: Curves.easeInOut,
@@ -237,9 +285,9 @@ class _PomodoroState extends State<Pomodoro>{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        MiBoton(funcion: reiniciar, icono: Icons.refresh, texto: "Reiniciar"),
+                        BotonBase(funcion: ejecutarReinicio, icono: Icons.refresh, texto: "Reiniciar"),
                         SizedBox(width: 15,),
-                        MiBoton(funcion: saltarSeccion, icono: Icons.keyboard_double_arrow_right_outlined, texto: "Saltar")
+                        BotonBase(funcion: saltarSeccion, icono: Icons.keyboard_double_arrow_right_outlined, texto: "Saltar")
                       ],
                     ),
                   ],

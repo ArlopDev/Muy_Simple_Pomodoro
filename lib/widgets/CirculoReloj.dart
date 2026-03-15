@@ -70,12 +70,10 @@ class CirculoReloj extends StatelessWidget {
                             color: Colors.white
                           ),
                         ), 
-                        Text("pausado",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                        Icon(
+                          Icons.play_circle_outline,
+                          color: Colors.white,
+                          size: 50,
                         ),
                       ],
                     ), 

@@ -1,27 +1,34 @@
+import 'package:app_prob_pomodoro/utils/ManejarSonido.dart';
 import 'package:flutter/material.dart';
 
-class MiBoton extends StatelessWidget{
+class BotonBase extends StatelessWidget{
 
   final VoidCallback funcion;
-  final IconData icono;
+  final IconData? icono;
   final String texto;
   final Color? color;
 
-  const MiBoton({
+  const BotonBase({
     required this.funcion,
-    required this.icono,
+    this.icono,
     required this.texto,
     this.color,
   });
 
+  void onPresionar(){
+    ManejarSonido.reproducir("tapBoton.mp3");
+    funcion();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return ElevatedButton.icon(
-      onPressed: funcion, 
+      onPressed: onPresionar,
       icon: Icon(icono, size: 25,color: Colors.white,),
-      label: Text(texto, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+      label: Text(texto, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
       style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? Colors.blue[300],
+        backgroundColor: Colors.blue[300],
         foregroundColor: Colors.white,
         elevation: 0,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),

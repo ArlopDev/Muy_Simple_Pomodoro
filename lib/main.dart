@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/pomodoro_inicio.dart';
+import 'screens/PomodoroInicio.dart';
+import 'utils/notificacion_service.dart';
 
-void main(){
-  runApp(MaterialApp(home: Pomodoro(),debugShowCheckedModeBanner: false,));
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificacionService.inicializar();
+  runApp(MaterialApp(home: PomodoroInicio(),debugShowCheckedModeBanner: false,));
 }
 
 

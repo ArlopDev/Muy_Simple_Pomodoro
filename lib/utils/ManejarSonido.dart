@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 
 
-class MiSonido {
+class ManejarSonido {
   static final AudioPlayer _audioPlayer = AudioPlayer();
 
   static Future<void> reproducir(String archivo) async {

@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   audioplayers: ^6.5.1
+  flutter_local_notifications: ^18.0.0
 
   cupertino_icons: ^1.0.8
 
@@ -26,5 +27,6 @@ flutter:
   assets:
     - assets/sounds/start.mp3
     - assets/sounds/finish.mp3
+    - assets/sounds/tapBoton.mp3
 
   
