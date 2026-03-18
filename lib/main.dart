@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'screens/PomodoroInicio.dart';
-import 'utils/notificacion_service.dart';
+import 'package:flutter/services.dart';
 
-void main() async{
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificacionService.inicializar();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MaterialApp(home: PomodoroInicio(),debugShowCheckedModeBanner: false,));
 }
 

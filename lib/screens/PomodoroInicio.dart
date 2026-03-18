@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import '../widgets/CirculoReloj.dart' show CirculoReloj;
 import '../utils/ManejarSonido.dart';
 import '../widgets/BotonBase.dart';
-import '../utils/notificacion_service.dart';
+
+import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 
 //import '../utils/Alertas.dart';
 
@@ -98,7 +100,7 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
   //   calcularProgreso();
   // }
 
-  void decrementar() async{
+  void decrementar() {
     setState(() {
       contadorSegundos--;
     if(contadorSegundos < 0){
@@ -116,19 +118,13 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
         texto = mensajeAleatorio(mensajesEnfoque);
       }
       ManejarSonido.reproducir("finish.mp3");
-      await NotificacionService.mostrarFinSesion(
-        "¡Sesión terminada!",
-        texto,
-      );
+      Vibration.vibrate(pattern: [0, 300, 70, 300]);
       setState(() {
         cambiarEstado();
         elegirEstado();
         contando = false;
       });
     }
-    await NotificacionService.mostrarContando(
-      "$contadorMinutos:${contadorSegundos.toString().padLeft(2, '0')} restantes"
-    );
   }
 
   double calcularProgreso(){
@@ -156,9 +152,8 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
       pausarTimer();
       }else{
       contando = true;
-      if(estado == "enfoque"){
-        ManejarSonido.reproducir("start.mp3");
-      }
+      ManejarSonido.reproducir("start.mp3");
+      HapticFeedback.mediumImpact();
       iniciarTimer();
       }
 
@@ -176,7 +171,6 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
 
   void pausarTimer(){
     timerGeneral?.cancel();
-    NotificacionService.cancelar();
   }
 
   void elegirEstado(){
@@ -209,54 +203,58 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
 
   @override
   Widget build(BuildContext context){
+    final ancho = MediaQuery.of(context).size.width;
+    final alto = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.yellow[50],
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedContainer(
               duration: Duration(milliseconds: 730),
               curve: Curves.easeInOut,
-              height: contando ? 150 : 80,
+              height: contando ? alto * 0.01 : alto * 0.09,
             ),
             AnimatedOpacity(
-              opacity: contando ? 0.0 : 1.0, 
+              opacity: contando ? 0.0 : 1.0,
               duration: Duration(milliseconds: 600),
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 730),
                 curve: Curves.easeInOut,
-                height: contando ? 0 : 37,
+                height: contando ? 0 : alto * 0.05,
                 child: Text("Pomodoro $contadorTrabajo/4",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
+                  style: TextStyle(
+                    fontSize: ancho * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
+                  ),
+                ),
               ),
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 730),
               curve: Curves.easeInOut,
-              height: 30,
+              height: alto * 0.04,
             ),
             CirculoReloj(
-              pulsado: pulsado, 
-              calcularProgreso: calcularProgreso(), 
-              pausarReanudar: pausarReanudar, 
-              contadorMinutos: contadorMinutos, 
-              contadorSegundos: contadorSegundos, 
-              contando: contando
+              pulsado: pulsado,
+              calcularProgreso: calcularProgreso(),
+              pausarReanudar: pausarReanudar,
+              contadorMinutos: contadorMinutos,
+              contadorSegundos: contadorSegundos,
+              contando: contando,
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 730),
               curve: Curves.easeInOut,
-              height: 60,
+              height: alto * 0.07,
             ),
             Text(textoEstado,
               style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.w500
+                fontSize: ancho * 0.09,
+                fontWeight: FontWeight.w500,
               ),
             ),
             AnimatedOpacity(
@@ -265,35 +263,29 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
               child: IgnorePointer(
                 ignoring: contando,
                 child: AnimatedContainer(
-                duration: Duration(milliseconds: 730),
-                curve: Curves.easeInOut,
-                height: contando ? 0 : 160,
-                child: Column(
-                  children: [
-                    SizedBox(height: 35),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     BotonBase(funcion: agregarMinuto, icono: Icons.add, texto: "1 minuto"),
-                    //   ],
-                    // ),
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 730),
-                      curve: Curves.easeInOut,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        BotonBase(funcion: ejecutarReinicio, icono: Icons.refresh, texto: "Reiniciar"),
-                        SizedBox(width: 15,),
-                        BotonBase(funcion: saltarSeccion, icono: Icons.keyboard_double_arrow_right_outlined, texto: "Saltar")
-                      ],
-                    ),
-                  ],
-                ), 
+                  duration: Duration(milliseconds: 730),
+                  curve: Curves.easeInOut,
+                  height: contando ? 0 : alto * 0.22,
+                  child: Column(
+                    children: [
+                      SizedBox(height: alto * 0.04),
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 730),
+                        curve: Curves.easeInOut,
+                        height: alto * 0.01,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          BotonBase(funcion: ejecutarReinicio, icono: Icons.refresh, texto: "Reiniciar"),
+                          SizedBox(width: ancho * 0.04),
+                          BotonBase(funcion: saltarSeccion, icono: Icons.keyboard_double_arrow_right_outlined, texto: "Saltar"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              )
             ),
           ],
         ),

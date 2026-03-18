@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   audioplayers: ^6.5.1
-  flutter_local_notifications: ^18.0.0
+  vibration: ^2.0.0
 
   cupertino_icons: ^1.0.8
 

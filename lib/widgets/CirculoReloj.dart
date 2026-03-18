@@ -21,14 +21,20 @@ class CirculoReloj extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ancho = MediaQuery.of(context).size.width;
+    final tamanoCirculo = ancho * 0.70;
+    final tamanoFuente = tamanoCirculo * 0.26;
+    final tamanoIcono = tamanoCirculo * 0.23;
+
     return Stack(
               alignment: Alignment.center,
               children: [
                 AnimatedContainer(
                   duration: Duration(milliseconds: 150),
                   curve: Curves.easeInOut,
-                  width: 250,
-                  height: 250,
+                  width: tamanoCirculo,
+                  height: tamanoCirculo,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
@@ -41,20 +47,20 @@ class CirculoReloj extends StatelessWidget {
                   ),
                 ),
                 CustomPaint(
-                  size: Size(250, 250),
+                  size: Size(tamanoCirculo, tamanoCirculo),
                   painter: CirculoCarga(progreso: calcularProgreso, color: pulsado ? Colors.blue[300]! : Colors.blue[200]!),
                 ),
                 GestureDetector(
                   onTap: pausarReanudar,
                   child: Container(
-                  width: 250,
-                  height: 250,
+                  width: tamanoCirculo,
+                  height: tamanoCirculo,
                   color: Colors.transparent,
                   child: Center(
                     child: AnimatedCrossFade(
                       firstChild: Text("$contadorMinutos:${contadorSegundos.toString().padLeft(2,"0")}",
                           style: TextStyle(
-                            fontSize: 65,
+                            fontSize: tamanoFuente,
                             fontWeight: FontWeight.bold,
                             color: Colors.white
                           ),
@@ -65,7 +71,7 @@ class CirculoReloj extends StatelessWidget {
                       children: [
                         Text("$contadorMinutos:${contadorSegundos.toString().padLeft(2,"0")}",
                           style: TextStyle(
-                            fontSize: 65,
+                            fontSize: tamanoFuente,
                             fontWeight: FontWeight.bold,
                             color: Colors.white
                           ),
@@ -73,7 +79,7 @@ class CirculoReloj extends StatelessWidget {
                         Icon(
                           Icons.play_circle_outline,
                           color: Colors.white,
-                          size: 50,
+                          size: tamanoIcono,
                         ),
                       ],
                     ), 
