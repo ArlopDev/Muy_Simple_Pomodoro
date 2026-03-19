@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   audioplayers: ^6.5.1
   vibration: ^2.0.0
+  flutter_native_splash: ^2.4.0
 
   cupertino_icons: ^1.0.8
 
@@ -29,4 +30,8 @@ flutter:
     - assets/sounds/finish.mp3
     - assets/sounds/tapBoton.mp3
 
-  
+
+flutter_native_splash:
+  color: "#FAFDE8"
+  android_12:
+    color: "#FAFDE8"
