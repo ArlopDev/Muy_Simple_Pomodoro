@@ -4,14 +4,18 @@ import 'package:flutter/services.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MaterialApp(home: PomodoroInicio(),debugShowCheckedModeBanner: false,));
+  runApp(MaterialApp(
+    theme: ThemeData(fontFamily: "fuenteGeneral"),
+    home: PomodoroInicio(),
+    debugShowCheckedModeBanner: false,
+    builder: (context, child) {
+      final mediaQuery = MediaQuery.of(context);
+      return MediaQuery(data: mediaQuery.copyWith(
+        textScaler: TextScaler.linear(
+          mediaQuery.textScaler.scale(1.0).clamp(0.9, 1.2)
+        )
+      ), child: child!);
+    },
+  ));
 }
-
-
-
-
-
-
-

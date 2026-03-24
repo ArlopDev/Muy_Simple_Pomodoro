@@ -26,7 +26,7 @@ class BotonBase extends StatelessWidget{
     return ElevatedButton.icon(
       onPressed: onPresionar,
       icon: Icon(icono, size: 25,color: Colors.white,),
-      label: Text(texto, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+      label: Text(texto, style: TextStyle(fontWeight: FontWeight.w900,fontSize: 18),),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue[300],
         foregroundColor: Colors.white,

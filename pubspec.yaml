@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none' 
 
-version: 1.0.0+1
+version: 1.0.0+4
 
 environment:
   sdk: ^3.6.1
@@ -25,6 +25,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: fuenteGeneral
+      fonts:
+        - asset: assets/fonts/FuenteGeneral.ttf
   assets:
     - assets/sounds/start.mp3
     - assets/sounds/finish.mp3

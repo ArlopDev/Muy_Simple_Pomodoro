@@ -118,7 +118,7 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
         texto = mensajeAleatorio(mensajesEnfoque);
       }
       ManejarSonido.reproducir("finish.mp3");
-      Vibration.vibrate(pattern: [0, 300, 70, 300]);
+      Vibration.vibrate(pattern: [0, 300, 70, 300, 70, 600]);
       setState(() {
         cambiarEstado();
         elegirEstado();
@@ -226,8 +226,8 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
                 height: contando ? 0 : alto * 0.05,
                 child: Text("Pomodoro $contadorTrabajo/4",
                   style: TextStyle(
-                    fontSize: ancho * 0.07,
-                    fontWeight: FontWeight.bold,
+                    fontSize: ancho * 0.071,
+                    fontWeight: FontWeight.w900,
                     color: Colors.black54,
                   ),
                 ),
@@ -253,7 +253,7 @@ class _PomodoroInicioState extends State<PomodoroInicio>{
             ),
             Text(textoEstado,
               style: TextStyle(
-                fontSize: ancho * 0.09,
+                fontSize: ancho * 0.11,
                 fontWeight: FontWeight.w500,
               ),
             ),
