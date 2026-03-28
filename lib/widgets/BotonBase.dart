@@ -25,15 +25,21 @@ class BotonBase extends StatelessWidget{
 
     return ElevatedButton.icon(
       onPressed: onPresionar,
-      icon: Icon(icono, size: 25,color: Colors.white,),
+      icon: Icon(icono, size: 25,color: Colors.blue[300],),
       label: Text(texto, style: TextStyle(fontWeight: FontWeight.w900,fontSize: 18),),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue[300],
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.yellow[50],
+        overlayColor: Colors.blue[300],
+        shadowColor: Colors.blue[900],
+        foregroundColor: Colors.blue[300],
         elevation: 0,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
+          borderRadius: BorderRadius.circular(20),
+        ),
+        side: BorderSide(
+          color: Colors.blue[300]!,
+          width: 1.5
         )
       ),
     );
