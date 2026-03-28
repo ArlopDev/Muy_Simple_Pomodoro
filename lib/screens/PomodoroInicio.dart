@@ -33,6 +33,7 @@ class _PomodoroInicioState extends State<PomodoroInicio> {
     await prefs.setInt('tiempoPomodoro', tiempoPomodoro);
     await prefs.setInt('descansoCorto', descansoCorto);
     await prefs.setInt('descansoLargo', descansoLargo);
+    await prefs.setInt("contadorMinutos", contadorMinutos);
   }
 
   Future<void> cargarOpciones() async {
@@ -41,6 +42,7 @@ class _PomodoroInicioState extends State<PomodoroInicio> {
       tiempoPomodoro = prefs.getInt('tiempoPomodoro') ?? 25;
       descansoCorto = prefs.getInt('descansoCorto') ?? 5;
       descansoLargo = prefs.getInt('descansoLargo') ?? 15;
+      contadorMinutos = prefs.getInt("contadorMinutos") ?? 25;
     });
   }
 
