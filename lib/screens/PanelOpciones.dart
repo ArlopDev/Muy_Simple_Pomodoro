@@ -160,7 +160,7 @@ class _PanelOpcionesState extends State<PanelOpciones>{
                 selecModo = 0;
                 widget.onEnfoqueChanged(50);
               });},),
-              //BotonMas(funcion: (){}),
+              BotonMas(),
             ]
           ),
           ),
@@ -192,7 +192,7 @@ class _PanelOpcionesState extends State<PanelOpciones>{
                 selecModo = 0;
                 widget.onDescansoChanged(10);
               });},),
-              //BotonMas(funcion: (){}),
+              BotonMas(),
             ]
           ),
           ),
@@ -224,7 +224,7 @@ class _PanelOpcionesState extends State<PanelOpciones>{
                 selecModo = 0;
                 widget.onDescansoLargoChanged(25);
               });},),
-              //BotonMas(funcion: (){}),
+              BotonMas(),
             ],
           ),
           ),
