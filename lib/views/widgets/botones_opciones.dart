@@ -1,3 +1,4 @@
+import 'package:app_prob_pomodoro/utils/manejar_sonido.dart';
 import 'package:flutter/material.dart';
 
 
@@ -7,18 +8,21 @@ class BotonesOpciones extends StatelessWidget {
   final int select;
   final int indice;
   final Function(bool) presionar;
+  final bool esPersonalizado; 
 
   BotonesOpciones ({
     required this.texto,
     required this.select,
     required this.indice,
-    required this.presionar
+    required this.presionar,
+    this.esPersonalizado = false,
   });
 
   final Map<String,Color> colores = {
-    "activSuave" : Colors.blue[300]!,
-    "activNormal" : Colors.green[300]!,
-    "activIntenso" : Colors.red[300]!,
+    "personalizadoActivo" : Colors.deepOrange[300]!,
+    "perosnalizadoDesactivado" : Colors.deepOrange[50]!,
+    "normalActivo" : Colors.blue[200]!,
+    "normalDesactivado" : Colors.white,
   }; 
 
   @override
@@ -34,8 +38,12 @@ class BotonesOpciones extends StatelessWidget {
       selected: select == indice,
       onSelected: presionar,
       showCheckmark: false,
-      selectedColor: Colors.blue[200],
-      backgroundColor: Colors.white,
+      selectedColor: esPersonalizado 
+        ? colores["personalizadoActivo"]
+        : colores["normalActivo"],
+      backgroundColor: esPersonalizado 
+        ? colores["perosnalizadoDesactivado"]
+        : colores["normalDesactivado"],
     );
   }
 }

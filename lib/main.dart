@@ -1,7 +1,7 @@
-import 'package:app_prob_pomodoro/providers/minutos_provider.dart';
+import 'package:app_prob_pomodoro/view_models/pomodoro_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screens/PomodoroInicio.dart';
+import 'views/screens/pomodoro_inicio.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -9,7 +9,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => MinutosProvider()),
+      ChangeNotifierProvider(create: (context) => PomodoroProvider()),
     ],
     child: MaterialApp(
       theme: ThemeData(fontFamily: "fuenteGeneral"),

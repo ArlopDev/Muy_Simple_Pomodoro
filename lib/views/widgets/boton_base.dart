@@ -1,4 +1,4 @@
-import 'package:app_prob_pomodoro/utils/ManejarSonido.dart';
+import 'package:app_prob_pomodoro/utils/manejar_sonido.dart';
 import 'package:flutter/material.dart';
 
 class BotonBase extends StatelessWidget{
@@ -16,7 +16,6 @@ class BotonBase extends StatelessWidget{
   });
 
   void onPresionar(){
-    ManejarSonido.reproducir("tapBoton.mp3");
     funcion();
   }
 
