@@ -18,7 +18,9 @@ con descanso largo cada 4 sesiones.
 ## Estado
 ✅ Completado — pendiente de verificación en Play Store
 
-![nuevaMuestra_pantallaPrincipal](https://github.com/user-attachments/assets/ecf593a8-471e-42f3-b74d-8ef15db88d8a)
-![muestraOpciones_2](https://github.com/user-attachments/assets/76f7f9fe-0b9c-4038-9387-691ac0fa9fdd)
-![muestra_2](https://github.com/user-attachments/assets/a67c2f95-5094-4b57-a9c6-3c6c9ff3897e)
+![HORIZONTAL_muestraOpciones_2](https://github.com/user-attachments/assets/fb5f5457-0fbb-49ea-94de-dc22de0e670a)
+![HORIZONTAL_muestra_2](https://github.com/user-attachments/assets/a20463be-7076-4efe-943d-f0702f518493)
+![HORIZONTAL_nuevaMuestra_pantallaPrincipal](https://github.com/user-attachments/assets/9a0d16ec-6ad1-473e-b369-db8547908380)
+![HORIZONTAL_muestraPersonalizarNumero_1](https://github.com/user-attachments/assets/cb7a050e-ee68-45cd-b0f1-fabf221c32f9)
+
 
