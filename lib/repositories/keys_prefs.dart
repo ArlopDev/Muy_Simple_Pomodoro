@@ -11,4 +11,6 @@ class KeysPrefs {
   static final indiceEnfoque = 'indiceEnfoque';
   static final indiceDescanso = 'indiceDescanso';
   static final indiceDescansoLargo = 'indiceDescansoLargo';
+
+  static final idioma = "idioma";
 }

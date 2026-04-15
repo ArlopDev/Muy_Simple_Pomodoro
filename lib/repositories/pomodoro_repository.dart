@@ -21,9 +21,11 @@ class PomodoroRepository {
     await prefs.setInt(KeysPrefs.indiceEnfoque, conf.indiceEnfoque);
     await prefs.setInt(KeysPrefs.indiceDescanso, conf.indiceDescanso);
     await prefs.setInt(KeysPrefs.indiceDescansoLargo, conf.indiceDescansoLargo);
+
+    await prefs.setString(KeysPrefs.idioma, conf.idioma);
   }
 
-  Future<ConfiguracionApp> cargarOpciones() async {
+  ConfiguracionApp cargarOpciones() {
     return ConfiguracionApp(
       tiempoEnfoque: prefs.getInt(KeysPrefs.enfoque) ?? 25,
       tiempoDescanso: prefs.getInt(KeysPrefs.descanso) ?? 5,
@@ -36,6 +38,8 @@ class PomodoroRepository {
       indiceEnfoque: prefs.getInt(KeysPrefs.indiceEnfoque) ?? 2,
       indiceDescanso: prefs.getInt(KeysPrefs.indiceDescanso) ?? 2,
       indiceDescansoLargo: prefs.getInt(KeysPrefs.indiceDescansoLargo) ?? 2,
+
+      idioma: prefs.getString(KeysPrefs.idioma) ?? "es",
     );
   }
 }

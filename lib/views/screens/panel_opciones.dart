@@ -1,3 +1,4 @@
+import 'package:app_prob_pomodoro/i18n/strings.g.dart';
 import 'package:app_prob_pomodoro/utils/manejar_sonido.dart';
 import 'package:app_prob_pomodoro/view_models/pomodoro_provider.dart';
 import 'package:app_prob_pomodoro/views/widgets/boton_mas.dart';
@@ -33,7 +34,7 @@ class PanelOpciones extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Opciones",
+              Text(t.settings.title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[700],
@@ -64,7 +65,7 @@ class PanelOpciones extends StatelessWidget {
               borderRadius: BorderRadius.circular(16)
             ),
             child: ContenidoOpciones(
-            texto: "Tiempo Enfoque", 
+            texto: t.settings.focusTime, 
             chips: [
               BotonesOpciones(
                 texto: "15 min", 
@@ -123,7 +124,7 @@ class PanelOpciones extends StatelessWidget {
               borderRadius: BorderRadius.circular(16)
             ),
             child: ContenidoOpciones(
-            texto: "Tiempo Descanso", 
+            texto: t.settings.breakTime, 
             chips: [
               BotonesOpciones(
                 texto: "3 min", 
@@ -182,7 +183,7 @@ class PanelOpciones extends StatelessWidget {
               borderRadius: BorderRadius.circular(16)
             ),
             child: ContenidoOpciones(
-            texto: "Tiempo Descanso largo", 
+            texto: t.settings.longBreakTime, 
             chips: [
               BotonesOpciones(
                 texto: "10 min", 

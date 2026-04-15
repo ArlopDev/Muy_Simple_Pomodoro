@@ -1,0 +1,19 @@
+{
+  "timer": {
+    "work": "Focus",
+    "break": "Break",
+    "longBreak": "Long Break",
+    "session": "Session",
+    "reset": "Reset",
+    "skip": "Skip"
+  },
+  "settings": {
+    "title": "Settings",
+    "focusTime": "Focus Time",
+    "breakTime": "Break Time",
+    "longBreakTime": "Long Break Time",
+    "customize": "Customize",
+    "cancel": "Cancel",
+    "accept": "Accept"
+  }
+}

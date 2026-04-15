@@ -1,0 +1,19 @@
+{
+  "timer": {
+    "work": "Enfoque",
+    "break": "Descanso",
+    "longBreak": "Descanso Largo",
+    "session" : "Sesión",
+    "reset": "Reiniciar",
+    "skip": "Saltar"
+  },
+  "settings": {
+    "title": "Opciones",
+    "focusTime": "Tiempo Enfoque",
+    "breakTime": "Tiempo Descanso",
+    "longBreakTime": "Tiempo Descanso Largo",
+    "customize": "Personalizar",
+    "cancel": "Cancelar",
+    "accept": "Aceptar"
+  }
+}

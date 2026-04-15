@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app_prob_pomodoro/i18n/strings.g.dart';
 import 'package:app_prob_pomodoro/models/configuracion_app.dart';
 import 'package:app_prob_pomodoro/repositories/pomodoro_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ enum TipoPersonalizado {enfoque, descanso, descansoLargo}
 
 class PomodoroProvider extends ChangeNotifier {
 
+  final SharedPreferences _prefs;
+
   ConfiguracionApp _config = ConfiguracionApp.defaults();
 
   ConfiguracionApp get config => _config;
@@ -24,24 +27,32 @@ class PomodoroProvider extends ChangeNotifier {
   int contadorSesiones = 1;
 
   TipoPersonalizado estado = TipoPersonalizado.enfoque;
-  String textoEstado = "Enfoque";
+
+  String get textoEstado {
+    switch (estado) {
+    case TipoPersonalizado.enfoque:
+      return t.timer.work;
+    case TipoPersonalizado.descanso:
+      return t.timer.kBreak;
+    case TipoPersonalizado.descansoLargo:
+      return t.timer.longBreak;
+    }
+  }
 
   bool pulsado = false;
   bool contando = false;
-
-  PomodoroProvider(){
+  
+  PomodoroProvider({required SharedPreferences prefs}) : _prefs = prefs{
     _cargarOpciones();
   }
 
-  Future<PomodoroRepository> _obtenerRepo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return PomodoroRepository(prefs: prefs);
+  PomodoroRepository _obtenerRepo() {
+    return PomodoroRepository(prefs: _prefs);
   }
 
-  Future<void> _cargarOpciones() async {
-    final PomodoroRepository repo = await _obtenerRepo();
-    _config = await repo.cargarOpciones();
+  void _cargarOpciones() {
+    final PomodoroRepository repo = _obtenerRepo();
+    _config =  repo.cargarOpciones();
 
     contadorMinutos = _config.tiempoEnfoque;
     notifyListeners();
@@ -58,6 +69,12 @@ class PomodoroProvider extends ChangeNotifier {
     if (estado == tipo){
       ejecutarReinicio();
     }
+    _guardarOpciones();
+  }
+
+  void setIdioma({required String idioma}) {
+    _config = _config.copyWith(idioma: idioma);
+    LocaleSettings.setLocaleRaw(idioma);
     _guardarOpciones();
   }
 
@@ -287,15 +304,12 @@ class PomodoroProvider extends ChangeNotifier {
     switch (estado) {
       case TipoPersonalizado.enfoque:
         contadorMinutos = _config.tiempoEnfoque;
-        textoEstado = "Enfoque";
         break;
       case TipoPersonalizado.descanso:
         contadorMinutos = _config.tiempoDescanso;
-        textoEstado = "Descanso";
         break;
       case TipoPersonalizado.descansoLargo:
         contadorMinutos = _config.tiempoDescansoLargo;
-        textoEstado = "Descanso largo";
         break;
     }
     notifyListeners();

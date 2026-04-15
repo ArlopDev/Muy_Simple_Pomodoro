@@ -1,3 +1,4 @@
+import 'package:app_prob_pomodoro/i18n/strings.g.dart';
 import 'package:app_prob_pomodoro/utils/manejar_sonido.dart';
 import 'package:app_prob_pomodoro/view_models/pomodoro_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _NumeroPersonalizadoState extends State<NumeroPersonalizado>{
   Widget build(BuildContext context) {
 
     return AlertDialog(
-      title: Text("Personalizar",style: TextStyle(
+      title: Text(t.settings.customize,style: TextStyle(
         color: Colors.black54,
         fontWeight: FontWeight.bold,
       ),),
@@ -61,7 +62,7 @@ class _NumeroPersonalizadoState extends State<NumeroPersonalizado>{
           style: TextButton.styleFrom(
             foregroundColor: Colors.black87,
           ),
-          child: Text("Cancelar", style: TextStyle(
+          child: Text(t.settings.cancel, style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),),
@@ -81,7 +82,7 @@ class _NumeroPersonalizadoState extends State<NumeroPersonalizado>{
               color: Colors.deepOrange[300]!,
             ),
           ),
-          child: Text("Aceptar", style: TextStyle(
+          child: Text(t.settings.accept, style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),),
