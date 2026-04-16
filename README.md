@@ -13,14 +13,14 @@ En este proyecto, mi prioridad fue organizar el código siguiendo estándares pr
 * **Internacionalización (Slang):** Gestión de idiomas mediante generación de código tipado, garantizando seguridad y escalabilidad.
 * **Persistencia:** Uso de `shared_preferences` para conservar las configuraciones de usuario.
 
-## ✨ Características Principales
+## Características Principales
 
 * **Ciclos Automáticos:** Flujo inteligente de trabajo (25 min) y descansos (5 min / 15 min largo).
 * **Personalización:** Ajuste de duración de sesiones según la necesidad del usuario.
 * **Control de Sesión:** Funcionalidad para saltar o reiniciar ciclos.
 * **Interfaz Limpia:** Diseño enfocado en la usabilidad y la reducción de distracciones.
 
-🚀 Instalación y Uso
+## Instalación y Uso
 
 Si deseas explorar o ejecutar este proyecto localmente:
 
