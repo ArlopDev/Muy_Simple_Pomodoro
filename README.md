@@ -28,16 +28,16 @@ Si deseas explorar o ejecutar este proyecto localmente:
    ```bash
    git clone https://github.com/ArlopDev/Muy_Simple_Pomodoro.git
 
-2 **Obtener dependencias:**
-    ```bash
-    flutter pub get
+2. **Obtener dependencias:**
+   ```bash
+   flutter pub get
 
-3 **Generar archivos de Internacionalización:**
+3. **Generar archivos de Internacionalización:**
 Este proyecto utiliza slang. Es necesario generar los archivos de traducción antes de ejecutar:
     ```bash
     dart run slang
 
-4 **Ejecutar la aplicación:**
+4. **Ejecutar la aplicación:**
     ```bash
     flutter run
 
