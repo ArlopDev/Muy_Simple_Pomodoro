@@ -152,7 +152,7 @@ class _PomodoroInicioState extends State<PomodoroInicio> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey[500]!, width: 2),
+                          border: Border.all(color: Colors.grey[300]!, width: 2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -166,16 +166,21 @@ class _PomodoroInicioState extends State<PomodoroInicio> {
                         provider.setIdioma(idioma: newLocale.languageCode);
                       },
                       // 3. Las opciones que aparecen al tocarlo
-                      itemBuilder: (context) => [
+                      itemBuilder: (context) {
+                        final currentLocale = LocaleSettings.currentLocale;
+
+                        return [
                         PopupMenuItem(
                           value: AppLocale.en,
-                          child: Text("EN - English", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[700], fontSize: 15),),
+                          child: Text("EN - ${t.language.english}", style: TextStyle(fontWeight: FontWeight.bold, color: 
+                          currentLocale == AppLocale.en ? Colors.deepOrange[300] : Colors.grey[700], fontSize: 15),),
                         ),
                         PopupMenuItem(
                           value: AppLocale.es,
-                          child: Text("ES - Español", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[700], fontSize: 15),),
+                          child: Text("ES - ${t.language.spanish}", style: TextStyle(fontWeight: FontWeight.bold, color:  currentLocale == AppLocale.es ? Colors.deepOrange[300] : Colors.grey[700], fontSize: 15),),
                         ),
-                      ],
+                        ];
+                      }
                     ),
                     )
                   ),

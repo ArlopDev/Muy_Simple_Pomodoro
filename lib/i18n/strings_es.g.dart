@@ -39,6 +39,7 @@ class TranslationsEs with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override late final _TranslationsTimerEs timer = _TranslationsTimerEs._(_root);
 	@override late final _TranslationsSettingsEs settings = _TranslationsSettingsEs._(_root);
+	@override late final _TranslationsLanguageEs language = _TranslationsLanguageEs._(_root);
 }
 
 // Path: timer
@@ -72,6 +73,17 @@ class _TranslationsSettingsEs implements TranslationsSettingsEn {
 	@override String get accept => 'Aceptar';
 }
 
+// Path: language
+class _TranslationsLanguageEs implements TranslationsLanguageEn {
+	_TranslationsLanguageEs._(this._root);
+
+	final TranslationsEs _root; // ignore: unused_field
+
+	// Translations
+	@override String get english => 'Inglés';
+	@override String get spanish => 'Español';
+}
+
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -93,6 +105,8 @@ extension on TranslationsEs {
 			'settings.customize' => 'Personalizar',
 			'settings.cancel' => 'Cancelar',
 			'settings.accept' => 'Aceptar',
+			'language.english' => 'Inglés',
+			'language.spanish' => 'Español',
 			_ => null,
 		};
 	}

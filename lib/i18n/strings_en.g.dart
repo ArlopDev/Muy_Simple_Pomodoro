@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final TranslationsTimerEn timer = TranslationsTimerEn._(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
+	late final TranslationsLanguageEn language = TranslationsLanguageEn._(_root);
 }
 
 // Path: timer
@@ -101,6 +102,21 @@ class TranslationsSettingsEn {
 	String get accept => 'Accept';
 }
 
+// Path: language
+class TranslationsLanguageEn {
+	TranslationsLanguageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'English'
+	String get english => 'English';
+
+	/// en: 'Spanish'
+	String get spanish => 'Spanish';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -122,6 +138,8 @@ extension on Translations {
 			'settings.customize' => 'Customize',
 			'settings.cancel' => 'Cancel',
 			'settings.accept' => 'Accept',
+			'language.english' => 'English',
+			'language.spanish' => 'Spanish',
 			_ => null,
 		};
 	}

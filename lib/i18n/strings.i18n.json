@@ -15,5 +15,9 @@
     "customize": "Customize",
     "cancel": "Cancel",
     "accept": "Accept"
+  },
+  "language":{
+    "english": "English",
+    "spanish": "Spanish"
   }
 }
